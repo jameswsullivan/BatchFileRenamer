@@ -12,3 +12,4 @@
 - Implement the maximum file name length checker.
 - Implement INFO and ERROR logging.
 - Add icon to MainForm.
+- Implement method to export original file names to a text (.txt) file before renaming.
