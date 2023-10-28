@@ -48,6 +48,7 @@
             startingFileNumberTextBox = new TextBox();
             fileNamingPatternTextBoxToolTip = new ToolTip(components);
             keepOriginalFileExtensionCheckBox = new CheckBox();
+            keepLogFileCheckBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)fileListDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -226,11 +227,25 @@
             keepOriginalFileExtensionCheckBox.Text = "Keep Original File Extension";
             keepOriginalFileExtensionCheckBox.UseVisualStyleBackColor = true;
             // 
+            // keepLogFileCheckBox
+            // 
+            keepLogFileCheckBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            keepLogFileCheckBox.AutoSize = true;
+            keepLogFileCheckBox.Checked = true;
+            keepLogFileCheckBox.CheckState = CheckState.Checked;
+            keepLogFileCheckBox.Location = new Point(232, 662);
+            keepLogFileCheckBox.Name = "keepLogFileCheckBox";
+            keepLogFileCheckBox.Size = new Size(100, 24);
+            keepLogFileCheckBox.TabIndex = 14;
+            keepLogFileCheckBox.Text = "Keep Logs";
+            keepLogFileCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(120F, 120F);
             AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(1348, 703);
+            Controls.Add(keepLogFileCheckBox);
             Controls.Add(keepOriginalFileExtensionCheckBox);
             Controls.Add(startingFileNumberTextBox);
             Controls.Add(startingFileNumberTextBoxLabel);
@@ -298,5 +313,6 @@
         private DataGridViewTextBoxColumn newFileNameTextBoxCol;
         private DataGridViewButtonColumn deleteLineButtonCol;
         private CheckBox keepOriginalFileExtensionCheckBox;
+        private CheckBox keepLogFileCheckBox;
     }
 }

@@ -240,7 +240,24 @@ namespace BatchFileRenamer
             keepOriginalFileExtensionCheckBox.Checked = true;
         }
 
-        #endregion
+        private void createLogFile()
+        {
+            string logDirectory = "logs";
+            string logFileName = $"{DateTime.Now:yyyy-MM-dd}.log";
+            string logFilePath = Path.Combine(logDirectory, logFileName);
+
+            if (!Directory.Exists(logDirectory))
+            {
+                Directory.CreateDirectory(logDirectory);
+            }
+
+            if (!File.Exists(logFilePath))
+            {
+                File.Create(logFilePath).Close();
+            }
+        }
+
+        #endregion Custom functions
 
         private void keepOriginalFileNameCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -336,14 +353,46 @@ namespace BatchFileRenamer
         private void renameFilesButton_Click(object sender, EventArgs e)
         {
             string newFileName = "";
+            string logFilePath = Path.Combine("logs", $"{DateTime.Now:yyyy-MM-dd}.log");
+            StringBuilder logMessage = new StringBuilder();
+
             if (fileListDataGridView.Rows.Count > 0)
             {
-                foreach (DataGridViewRow row in fileListDataGridView.Rows)
+                if (keepLogFileCheckBox.Checked)
                 {
-                    newFileName = Path.Combine(Path.GetDirectoryName(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString()), row.Cells[newFileNameTextBoxCol.Index].Value.ToString());
-                    File.Move(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString(), newFileName);
-                    row.Cells[originalFileNameTextBoxCol.Index].Value = newFileName;
-                    newFileName = "";
+                    createLogFile();
+
+                    foreach (DataGridViewRow row in fileListDataGridView.Rows)
+                    {
+                        if (File.Exists(logFilePath))
+                        {
+                            logMessage.Append("File: ");
+                            logMessage.Append($"\"{row.Cells[originalFileNameTextBoxCol.Index].Value.ToString()}\"");
+                            logMessage.Append(" has been renamed to: ");
+                            logMessage.Append($"\"{row.Cells[newFileNameTextBoxCol.Index].Value.ToString()}\"");
+                            logMessage.Append(Environment.NewLine);
+
+                            File.AppendAllText(logFilePath, logMessage.ToString());
+                            logMessage.Clear();
+                        }
+
+                        newFileName = Path.Combine(Path.GetDirectoryName(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString()), row.Cells[newFileNameTextBoxCol.Index].Value.ToString());
+                        File.Move(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString(), newFileName);
+                        row.Cells[originalFileNameTextBoxCol.Index].Value = newFileName;
+                        newFileName = "";
+                    }
+
+                    File.AppendAllText(logFilePath, Environment.NewLine);
+                }
+                else
+                {
+                    foreach (DataGridViewRow row in fileListDataGridView.Rows)
+                    {
+                        newFileName = Path.Combine(Path.GetDirectoryName(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString()), row.Cells[newFileNameTextBoxCol.Index].Value.ToString());
+                        File.Move(row.Cells[originalFileNameTextBoxCol.Index].Value.ToString(), newFileName);
+                        row.Cells[originalFileNameTextBoxCol.Index].Value = newFileName;
+                        newFileName = "";
+                    }
                 }
             }
 
