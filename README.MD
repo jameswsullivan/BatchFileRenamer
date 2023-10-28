@@ -3,6 +3,8 @@
 
 ## Summary
 
+<img src="screenshot.png" width="250">
+
 ![Batch File Renamer](https://github.com/jameswsullivan/BatchFileRenamer/blob/main/screenshot.png | width=250)
 
 - This project is written in C# as a Windows Forms App.
